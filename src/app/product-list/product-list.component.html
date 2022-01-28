@@ -1,0 +1,16 @@
+<div style="padding: 10px;">
+    <h1>Liste des produits</h1>
+    <hr>
+    <ul style="margin:20px;">
+        <li *ngFor="let item of productList" class="item">
+            <div class="img-item">
+                <img width="150" [src]="'../../assets/'+item.img_path" alt="shop">
+            </div>
+            <div class="detail">
+                <p>{{ item.title }}</p>
+                <p>{{ item.price | currency:'EUR' }}</p>
+                <button mat-raised-button color="primary">Add to cart</button>
+            </div>
+        </li>
+    </ul>
+</div>

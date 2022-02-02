@@ -7,7 +7,7 @@
                 <img width="150" [src]="'../../assets/'+item.img_path" alt="shop">
             </div>
             <div class="detail">
-                <p>{{ item.title }}</p>
+                <div> <a [routerLink]="['/product-list', item.id]"> {{ item.title }} </a></div>
                 <p>{{ item.price | currency:'EUR' }}</p>
                 <button mat-raised-button color="primary">Add to cart</button>
             </div>

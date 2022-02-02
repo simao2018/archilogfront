@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-export interface ProductType {
-  title: string;
-  img_path: string;
-  price: number;
-}
+import { ProductType } from '../provider/order.service';
 
 @Component({
   selector: 'app-product-list',
@@ -13,38 +8,7 @@ export interface ProductType {
 })
 export class ProductListComponent implements OnInit {
 
-  public productList: ProductType[] = [
-    {
-      title: "title",
-      img_path: "shop.png",
-      price: 35
-    },
-    {
-      title: "title",
-      img_path: "shop.png",
-      price: 35
-    }, {
-      title: "title",
-      img_path: "shop.png",
-      price: 35
-    }, {
-      title: "title",
-      img_path: "shop.png",
-      price: 35
-    }, {
-      title: "title",
-      img_path: "shop.png",
-      price: 35
-    }, {
-      title: "title",
-      img_path: "shop.png",
-      price: 35
-    }, {
-      title: "title",
-      img_path: "shop.png",
-      price: 35
-    }
-  ]
+  public productList: ProductType[] = productList;
 
   constructor() { }
 
@@ -52,3 +16,45 @@ export class ProductListComponent implements OnInit {
   }
 
 }
+
+export const productList: ProductType[] = [
+  {
+    title: "title",
+    img_path: "shop.png",
+    price: 35,
+    id: 1,
+    description: 'lorem ipsum ...'
+  },
+  {
+    title: "title",
+    img_path: "shop.png",
+    price: 35,
+    id: 2,
+    description: 'lorem ipsum ...'
+  },
+  {
+    title: "title",
+    img_path: "shop.png",
+    price: 35,
+    id: 3,
+    description: 'lorem ipsum ...'
+  }, {
+    title: "title",
+    img_path: "shop.png",
+    price: 35,
+    id: 4,
+    description: 'lorem ipsum ...'
+  }, {
+    title: "title",
+    img_path: "shop.png",
+    price: 35,
+    id: 5,
+    description: 'lorem ipsum ...'
+  }, {
+    title: "title",
+    img_path: "shop.png",
+    price: 35,
+    id: 6,
+    description: 'lorem ipsum ...'
+  },
+]

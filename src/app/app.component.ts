@@ -13,6 +13,5 @@ export class AppComponent {
     private router: Router
   ) {
     console.log('init');
-    this.router.navigateByUrl('product-list');
   }
 }

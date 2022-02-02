@@ -8,13 +8,19 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { ProductListComponent } from './product-list/product-list.component';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { DetailComponent } from './detail/detail.component';
+import { CartComponent } from './cart/cart.component';
+import { MatIconModule } from '@angular/material/icon';
+
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductListComponent
+    ProductListComponent,
+    DetailComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
@@ -23,6 +29,7 @@ import { CommonModule } from '@angular/common';
     MatToolbarModule,
     MatButtonModule,
     CommonModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

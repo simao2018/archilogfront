@@ -11,6 +11,10 @@ import { CommonModule } from '@angular/common';
 import { DetailComponent } from './detail/detail.component';
 import { CartComponent } from './cart/cart.component';
 import { MatIconModule } from '@angular/material/icon';
+import { LoginComponent } from './login/login.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -20,7 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
     AppComponent,
     ProductListComponent,
     DetailComponent,
-    CartComponent
+    CartComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -30,6 +35,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     CommonModule,
     MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

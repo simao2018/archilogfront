@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 
 export interface ProductType {
     name: string;
@@ -50,5 +51,9 @@ export class OrderService {
 
     public createOrUpdateOrder(order: OrderDto) {
         this.httpClient.post(this.path, order);
+    }
+
+    public addToCart(product: ProductType): Observable<{ success?: boolean, message?: string }> {
+        return this.httpClient.post(this.path, product);
     }
 }

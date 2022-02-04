@@ -56,6 +56,10 @@ export class ProductListComponent implements OnInit {
       this.order.cart.items.push(product);
     }
 
+    const response = await this.orderService.addToCart(product).toPromise();
+    if (response.success)
+      console.log("🚀 ~ addToCart ~ response", response.message);
+
     this.productAdd = product;
   }
 

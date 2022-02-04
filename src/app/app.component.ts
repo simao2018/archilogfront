@@ -14,4 +14,8 @@ export class AppComponent {
   ) {
     console.log('init');
   }
+
+  goto() {
+    this.router.navigateByUrl('cart');
+  }
 }

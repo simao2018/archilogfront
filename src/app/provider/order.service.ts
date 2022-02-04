@@ -1,10 +1,13 @@
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+
 export interface ProductType {
-    title: string;
-    img_path: string;
+    name: string;
+    image: string;
     price: number;
     id: number;
     description: string;
-    qte?: number;
+    quantity?: number;
 }
 
 export interface UserDto {
@@ -31,4 +34,21 @@ export interface CartDto {
     qte?: number;
     prix_total?: number;
     items?: ProductType[];
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+
+export class OrderService {
+    path: string = 'http://93.3.28.232:5000/api/orders'
+    constructor(
+        protected httpClient: HttpClient,
+    ) {
+
+    }
+
+    public createOrUpdateOrder(order: OrderDto) {
+        this.httpClient.post(this.path, order);
+    }
 }

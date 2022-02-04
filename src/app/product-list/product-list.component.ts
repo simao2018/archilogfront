@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductType } from '../provider/order.service';
+import { OrderDto, OrderService, OrderStatus, ProductType } from '../provider/order.service';
+import { ProductService } from '../provider/product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -8,53 +9,55 @@ import { ProductType } from '../provider/order.service';
 })
 export class ProductListComponent implements OnInit {
 
-  public productList: ProductType[] = productList;
+  public productList: ProductType[] = [];
+  public order: OrderDto = {};
+  public productAdd?: ProductType;
 
-  constructor() { }
+  public loading?: boolean = false;
+  constructor(
+    private productService: ProductService,
+    private orderService: OrderService,
+  ) { }
 
   ngOnInit(): void {
+    this.loadProduct();
   }
 
-}
+  async loadProduct() {
+    this.loading = true;
+    const localResponse = localStorage.getItem('productList');
+    if (localResponse) {
+      this.productList = JSON.parse(localResponse);
+    }
+    else {
+      const response = await this.productService.getProduct().toPromise();
+      if (response) {
+        this.productList = Object.values(response)[3] as ProductType[];
+        if (this.productList?.length)
+          localStorage.setItem('productList', JSON.stringify(this.productList));
+        console.log("🚀 ~ loadProduct ~ response", this.productList);
 
-export const productList: ProductType[] = [
-  {
-    title: "title",
-    img_path: "shop.png",
-    price: 35,
-    id: 1,
-    description: 'lorem ipsum ...'
-  },
-  {
-    title: "title",
-    img_path: "shop.png",
-    price: 35,
-    id: 2,
-    description: 'lorem ipsum ...'
-  },
-  {
-    title: "title",
-    img_path: "shop.png",
-    price: 35,
-    id: 3,
-    description: 'lorem ipsum ...'
-  }, {
-    title: "title",
-    img_path: "shop.png",
-    price: 35,
-    id: 4,
-    description: 'lorem ipsum ...'
-  }, {
-    title: "title",
-    img_path: "shop.png",
-    price: 35,
-    id: 5,
-    description: 'lorem ipsum ...'
-  }, {
-    title: "title",
-    img_path: "shop.png",
-    price: 35,
-    id: 6,
-    description: 'lorem ipsum ...'
-  },
-]
+      }
+    }
+
+    this.loading = false;
+  }
+  async addToCart(product: ProductType) {
+
+    if (!this.order?.cart || !this.order?.cart?.items?.length) {
+      this.order = {
+        cart: {
+          items: [product],
+        },
+        statut: OrderStatus.PREPARATION
+      };
+    }
+    else {
+      this.order.cart.items.push(product);
+    }
+
+    this.productAdd = product;
+  }
+
+
+}

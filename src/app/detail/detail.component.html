@@ -4,13 +4,13 @@
 
     <div id="container" style="padding: 30;">
         <div class="img">
-            <img width="500" [src]="'../../assets/'+item.img_path" alt="shop">
+            <img width="500" [src]="'../../assets/'+item?.image" alt="shop">
         </div>
         <div class="description">
             <ul>
-                <li> Titre de l'article : {{ item.title }}</li>
-                <li> Description de l'article : {{ item.description }} </li>
-                <li> Prix de l'article : {{ item.price | currency:'EUR' }} </li>
+                <li> Titre de l'article : {{ item?.name }}</li>
+                <li> Description de l'article : {{ item?.description }} </li>
+                <li> Prix de l'article : {{ item?.price | currency:'EUR' }} </li>
             </ul>
             <div style="padding-left:30px;">
                 <button mat-raised-button color="primary">Add to cart</button>

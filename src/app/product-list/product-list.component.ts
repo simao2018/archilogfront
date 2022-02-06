@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderDto, OrderService, OrderStatus, ProductType } from '../provider/order.service';
+import { Router } from '@angular/router';
+import { OrderDto, OrderService, OrderStatus, ProductType, UserDto } from '../provider/order.service';
 import { ProductService } from '../provider/product.service';
 
 @Component({
@@ -10,17 +11,39 @@ import { ProductService } from '../provider/product.service';
 export class ProductListComponent implements OnInit {
 
   public productList: ProductType[] = [];
-  public order: OrderDto = {};
+  public order?: OrderDto;
   public productAdd?: ProductType;
 
   public loading?: boolean = false;
+  public userConnected?: UserDto;
   constructor(
     private productService: ProductService,
     private orderService: OrderService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    const user = localStorage.getItem('user');
+    if (!user)
+      this.router.navigateByUrl('login');
+    else {
+      this.userConnected = JSON.parse(user);
+      const order = localStorage.getItem('order');
+      if (!order)
+        this.initOrder()
+      else
+        this.order = JSON.parse(order);
+    }
     this.loadProduct();
+  }
+
+  private async initOrder() {
+    const response = await this.orderService.initOrder((this.userConnected as UserDto).id_user as string).toPromise();
+    console.log("🚀 ~ ngOnInit ~ response", response.order);
+    if (response.order) {
+      localStorage.setItem('order', JSON.stringify(response.order));
+      this.order = response.order;
+    }
   }
 
   async loadProduct() {
@@ -44,23 +67,24 @@ export class ProductListComponent implements OnInit {
   }
   async addToCart(product: ProductType) {
 
-    if (!this.order?.cart || !this.order?.cart?.items?.length) {
-      this.order = {
+    if (!this.order?.cart || !this.order?.cart?.produits?.length) {
+      Object.assign({
         cart: {
-          items: [product],
+          produits: [product],
         },
         statut: OrderStatus.PREPARATION
-      };
+      },
+        this.order);
     }
     else {
-      this.order.cart.items.push(product);
+      this.order.cart.produits.push(product);
     }
-
-    const response = await this.orderService.addToCart(product).toPromise();
-    if (response.success)
-      console.log("🚀 ~ addToCart ~ response", response.message);
-
     this.productAdd = product;
+
+  }
+
+  getCrosselProduct() {
+    return this.productList.filter(x => x.category === this.productAdd?.category && x.id !== this.productAdd?.id);
   }
 
 

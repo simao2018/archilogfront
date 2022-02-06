@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LoginService } from '../provider/login.service';
 
 @Component({
@@ -8,17 +9,28 @@ import { LoginService } from '../provider/login.service';
 })
 export class LoginComponent implements OnInit {
 
-  username?: string;
+  nom_user?: string;
   password?: string;
   constructor(
-    private loginService: LoginService
+    private loginService: LoginService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    const userLocal = localStorage.getItem('user');
+    if (userLocal)
+      this.router.navigateByUrl('product-list');
+
   }
 
   async login() {
-    const response = await this.loginService.login({ username: this.username, password: this.password }).toPromise();
+    console.log('test...');
+    const response = await this.loginService.login({ nom_user: this.nom_user, password: this.password }).toPromise();
+    console.log("🚀 ~ login ~ response", response)
+    if (response.user) {
+      localStorage.setItem('user', JSON.stringify(response.user))
+      this.router.navigateByUrl('product-list');
+    }
   }
 
 }

@@ -9,13 +9,15 @@ export interface ProductType {
     id: number;
     description: string;
     quantity?: number;
+    category?: string;
 }
 
 export interface UserDto {
-    id?: string;
+    id_user?: string;
     email?: string;
+    nom_user?: string,
     password?: string;
-
+    role?: string;
     orderList?: OrderDto[];
 }
 
@@ -25,7 +27,7 @@ export enum OrderStatus {
 }
 
 export interface OrderDto {
-    id?: string;
+    id_order?: string;
     statut?: OrderStatus;
     cart?: CartDto;
 }
@@ -34,7 +36,7 @@ export interface CartDto {
     id?: string;
     qte?: number;
     prix_total?: number;
-    items?: ProductType[];
+    produits?: ProductType[];
 }
 
 @Injectable({
@@ -42,18 +44,32 @@ export interface CartDto {
 })
 
 export class OrderService {
-    path: string = 'http://93.3.28.232:5000/api/orders'
+    path: string = 'http://localhost:80';
     constructor(
         protected httpClient: HttpClient,
     ) {
 
     }
 
+    public initOrder(userId: string): Observable<{ message?: string; order?: OrderDto }> {
+        console.log("🚀 ~ initOrder ~ userId", userId)
+        return this.httpClient.post(this.path + '/sentcommander', { userId: userId });
+    }
+
+    public updateOrder(order: OrderDto) {
+        console.log("🚀 ~ updateOrder ~ order", order)
+        return this.httpClient.put(this.path + '/update', {
+            id_order: order.id_order,
+            prix_total: order.cart?.prix_total,
+            produits: order.cart?.produits
+        });
+    }
+
     public createOrUpdateOrder(order: OrderDto) {
         this.httpClient.post(this.path, order);
     }
 
-    public addToCart(product: ProductType): Observable<{ success?: boolean, message?: string }> {
-        return this.httpClient.post(this.path, product);
+    public stripePayment(amount: number, qte: number) {
+        return this.httpClient.post(this.path + '/paiement', { montant: amount, number: qte });
     }
 }

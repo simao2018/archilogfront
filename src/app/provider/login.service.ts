@@ -1,5 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { UserDto } from "./order.service";
 
 @Injectable({
     providedIn: 'root'
@@ -7,12 +9,12 @@ import { Injectable } from "@angular/core";
 
 export class LoginService {
 
-    path: string = 'http://93.3.28.232:5000/api/'
+    path: string = 'http://localhost:80'
     constructor(
         protected httpClient: HttpClient
     ) { }
 
-    public login(data: { username?: string, password?: string }) {
-        return this.httpClient.post(this.path, data);
+    public login(data: { nom_user?: string, password?: string }): Observable<{ message?: string; user?: UserDto }> {
+        return this.httpClient.post(this.path + '/singin', data);
     }
 }
